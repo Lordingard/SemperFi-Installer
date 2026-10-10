@@ -3,77 +3,78 @@
 **Retrouvez Semper Fi (1998) sur un Windows moderne, avec votre propre copie du jeu.**
 
 [![Windows build](https://github.com/Lordingard/SemperFi-Installer/actions/workflows/build.yml/badge.svg)](https://github.com/Lordingard/SemperFi-Installer/actions/workflows/build.yml)
-[![Version 0.7](https://img.shields.io/badge/version-0.7-olive)](https://github.com/Lordingard/SemperFi-Installer/releases/tag/v0.7)
+[![Version 0.8](https://img.shields.io/badge/version-0.8-olive)](https://github.com/Lordingard/SemperFi-Installer/releases/tag/v0.8)
 [![License MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-[English](README.en.md) · [Téléchargements](https://github.com/Lordingard/SemperFi-Installer/releases/latest) · [Signaler un problème](https://github.com/Lordingard/SemperFi-Installer/issues)
+[English](README.en.md) Â· [TÃ©lÃ©chargements](https://github.com/Lordingard/SemperFi-Installer/releases/latest) Â· [Signaler un problÃ¨me](https://github.com/Lordingard/SemperFi-Installer/issues)
 
 Cet installateur communautaire remplace le setup 16 bits du CD, installe les
-fichiers originaux et applique les corrections de compatibilité validées.
-Il accepte directement l'ISO ou le dossier extrait du CD. Après installation,
-les données, vidéos et musiques sont lues localement : le CD n'est plus nécessaire.
+fichiers originaux et applique les corrections de compatibilitÃ© validÃ©es.
+Il accepte directement l'ISO ou le dossier extrait du CD. AprÃ¨s installation,
+les donnÃ©es, vidÃ©os et musiques sont lues localement : le CD n'est plus nÃ©cessaire.
 
-**Le jeu et son ISO ne sont pas fournis.** Une copie personnelle de l'édition
-prise en charge est nécessaire. Le projet n'est pas affilié à l'éditeur original.
+**Le jeu et son ISO ne sont pas fournis.** Une copie personnelle de l'Ã©dition
+prise en charge est nÃ©cessaire. Le projet n'est pas affiliÃ© Ã  l'Ã©diteur original.
 
-## Télécharger et installer
+## TÃ©lÃ©charger et installer
 
-1. Télécharger [SemperFi-Installer-v0.7-windows.zip](https://github.com/Lordingard/SemperFi-Installer/releases/download/v0.7/SemperFi-Installer-v0.7-windows.zip), puis extraire l'archive.
-2. Ouvrir **Installer-SemperFi-Autonome-v0.7.exe**.
-3. Sélectionner l'ISO du jeu ou le dossier contenant `SF.EXE`.
-4. Choisir un nouveau dossier. `C:\Program Files (x86)\SemperFi` est proposé et reste modifiable.
-5. Lancer **Semper Fi** depuis le raccourci créé sur le Bureau.
+1. TÃ©lÃ©charger [SemperFi-Installer-v0.8-windows.zip](https://github.com/Lordingard/SemperFi-Installer/releases/download/v0.8/SemperFi-Installer-v0.8-windows.zip), puis extraire l'archive.
+2. Ouvrir **Installer-SemperFi-Autonome-v0.8.exe**.
+3. SÃ©lectionner l'ISO du jeu ou le dossier contenant `SF.EXE`.
+4. Choisir un nouveau dossier. `C:\Program Files (x86)\SemperFi` est proposÃ© et reste modifiable.
+5. Lancer **Semper Fi** depuis le raccourci crÃ©Ã© sur le Bureau.
 
-Les dossiers protégés demandent une autorisation administrateur à l'installation
-et à la désinstallation. Le jeu se lance normalement, sans élévation.
-L'installateur refuse une destination existante et vérifie les fichiers du CD.
+Les dossiers protÃ©gÃ©s demandent une autorisation administrateur Ã  l'installation
+et Ã  la dÃ©sinstallation. Le jeu se lance normalement, sans Ã©lÃ©vation.
+L'installateur refuse une destination existante et vÃ©rifie les fichiers du CD.
 
-## Ce que la version 0.7 apporte
+## Ce que la version 0.8 apporte
 
-| Fonction | Résultat |
+| Fonction | RÃ©sultat |
 | --- | --- |
+| Langue des outils | Choix Français / English, mémorisé pour la désinstallation |
 | Installation depuis ISO ou dossier | Aucun setup 16 bits ni montage d'ISO requis |
-| Campagnes | Correction du débordement de chemin qui provoquait un plantage |
-| Affichage | DDrawCompat 0.7.1, palettes et six icônes des onglets corrigées |
-| Vidéos et musiques | Lecture locale, y compris après le choix d'une campagne |
-| Bureau | Raccourci automatique avec l'icône originale du jeu |
-| Désinstallation Windows | Entrée Semper Fi dans les applications installées |
-| Sauvegardes et préférences | Choix de les conserver ou de les supprimer |
+| Campagnes | Correction du dÃ©bordement de chemin qui provoquait un plantage |
+| Affichage | DDrawCompat 0.7.1, palettes et six icÃ´nes des onglets corrigÃ©es |
+| VidÃ©os et musiques | Lecture locale, y compris aprÃ¨s le choix d'une campagne |
+| Bureau | Raccourci automatique avec l'icÃ´ne originale du jeu |
+| DÃ©sinstallation Windows | EntrÃ©e Semper Fi dans les applications installÃ©es |
+| Sauvegardes et prÃ©fÃ©rences | Choix de les conserver ou de les supprimer |
 
-## Installation 0.6 déjà présente ?
+## Installation 0.6 dÃ©jÃ  prÃ©sente ?
 
 Fermer le jeu, ouvrir **Correctif-Musiques-SemperFi.exe**, puis choisir le dossier
-de l'installation autonome. Ce correctif rétablit les chemins des musiques
-sans réinstaller le jeu ni modifier les sauvegardes ou les préférences.
-Une copie de l'exécutable précédent est conservée pour revenir en arrière.
-Il cible les exécutables autonomes reconnus, pas une installation originale non corrigée.
+de l'installation autonome. Ce correctif rÃ©tablit les chemins des musiques
+sans rÃ©installer le jeu ni modifier les sauvegardes ou les prÃ©fÃ©rences.
+Une copie de l'exÃ©cutable prÃ©cÃ©dent est conservÃ©e pour revenir en arriÃ¨re.
+Il cible les exÃ©cutables autonomes reconnus, pas une installation originale non corrigÃ©e.
 
-## Désinstaller
+## DÃ©sinstaller
 
-Dans les **applications installées de Windows**, choisir **Semper Fi**, puis
-**Désinstaller**. Le même outil est disponible sous `Desinstaller.exe` dans
-le dossier du jeu. La conservation des sauvegardes et préférences est cochée
-par défaut ; leur suppression demande une confirmation supplémentaire.
+Dans les **applications installÃ©es de Windows**, choisir **Semper Fi**, puis
+**DÃ©sinstaller**. Le mÃªme outil est disponible sous `Desinstaller.exe` dans
+le dossier du jeu. La conservation des sauvegardes et prÃ©fÃ©rences est cochÃ©e
+par dÃ©faut ; leur suppression demande une confirmation supplÃ©mentaire.
 
 En cas de conservation, `SCEN`, `CAMPAIGN` et `PREFS.DAT` restent dans le dossier.
-Les autres fichiers personnels sont également préservés. Garder l'installation
-à son emplacement initial pour que le raccourci et l'entrée Windows restent valides.
+Les autres fichiers personnels sont Ã©galement prÃ©servÃ©s. Garder l'installation
+Ã  son emplacement initial pour que le raccourci et l'entrÃ©e Windows restent valides.
 
-## Compatibilité et validation
+## CompatibilitÃ© et validation
 
-La version 0.7 a été testée sur le poste Windows récent du mainteneur, depuis
-l'ISO et son contenu extrait. Une installation fraîche, les campagnes,
-l'affichage et les musiques ont été confirmés par l'utilisateur. L'installation,
-les empreintes des fichiers, la désinstallation et la préservation des données
-ont aussi été vérifiées automatiquement.
+La version 0.7 a Ã©tÃ© testÃ©e sur le poste Windows rÃ©cent du mainteneur, depuis
+l'ISO et son contenu extrait. Une installation fraÃ®che, les campagnes,
+l'affichage et les musiques ont Ã©tÃ© confirmÃ©s par l'utilisateur. L'installation,
+les empreintes des fichiers, la dÃ©sinstallation et la prÃ©servation des donnÃ©es
+ont aussi Ã©tÃ© vÃ©rifiÃ©es automatiquement.
 
-Ce résultat ne couvre pas toutes les versions de Windows ni toutes les éditions
-du CD. Une campagne entière et le multijoueur n'ont pas été validés.
-L'interface des outils est en français ; le jeu conserve sa langue d'origine.
+Ce rÃ©sultat ne couvre pas toutes les versions de Windows ni toutes les Ã©ditions
+du CD. Une campagne entiÃ¨re et le multijoueur n'ont pas Ã©tÃ© validÃ©s.
+L'interface des outils est en franÃ§ais ; le jeu conserve sa langue d'origine.
 
-## Documentation et développement
+## Documentation et dÃ©veloppement
 
-- [Guide d'utilisation et dépannage](docs/usage.md)
+- [Guide d'utilisation et dÃ©pannage](docs/usage.md)
 - [Compiler depuis les sources](docs/build.md)
 - [Corrections et structure du projet](docs/technical.md)
 - [Validation et tests](docs/testing.md)
@@ -85,8 +86,8 @@ L'interface des outils est en français ; le jeu conserve sa langue d'origine.
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build.ps1
 ```
 
-Les exécutables sont produits dans `bin`. Le build ne nécessite aucun fichier
-du jeu. Les tests d'installation complets nécessitent votre propre ISO ou dossier.
+Les exÃ©cutables sont produits dans `bin`. Le build ne nÃ©cessite aucun fichier
+du jeu. Les tests d'installation complets nÃ©cessitent votre propre ISO ou dossier.
 
 Le code original du projet est sous [licence MIT](LICENSE).
 DDrawCompat conserve [sa propre licence](THIRD_PARTY_NOTICES.md).

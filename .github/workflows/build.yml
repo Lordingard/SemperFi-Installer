@@ -18,6 +18,9 @@ jobs:
       - name: Build Windows tools
         shell: pwsh
         run: ./scripts/build.ps1
+      - name: Test French and English tools
+        shell: pwsh
+        run: ./scripts/test-localization.ps1
       - uses: actions/upload-artifact@v4
         with:
           name: SemperFi-Installer-windows

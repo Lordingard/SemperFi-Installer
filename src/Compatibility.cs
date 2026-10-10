@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -13,10 +13,10 @@ static class Compatibility {
   byte[] before=File.ReadAllBytes(file),sf=BinaryPatch.Transform(before,false);
   Directory.CreateDirectory(backupFolder);string backup=Path.Combine(backupFolder,"SF.original.exe");
   if(!File.Exists(backup))File.WriteAllBytes(backup,BinaryPatch.Transform(before,true));
-  else if(BinaryPatch.Hash(File.ReadAllBytes(backup))!=BinaryPatch.Original)throw new IOException("Sauvegarde originale differente.");
+  else if(BinaryPatch.Hash(File.ReadAllBytes(backup))!=BinaryPatch.Original)throw new IOException(Language.T("Sauvegarde originale differente.", "Original backup differs."));
   byte[] dll;
   using(var s=Assembly.GetExecutingAssembly().GetManifestResourceStream("ddraw.dll"))using(var m=new MemoryStream()){s.CopyTo(m);dll=m.ToArray();}
-  if(BinaryPatch.Hash(dll)!=DdrawHash)throw new IOException("Bibliotheque graphique non conforme.");
+  if(BinaryPatch.Hash(dll)!=DdrawHash)throw new IOException(Language.T("Bibliotheque graphique non conforme.", "Graphics library checksum mismatch."));
   string dllPath=Path.Combine(folder,"ddraw.dll"),configPath=Path.Combine(folder,"DDrawCompat-SF.ini");
   Backup(dllPath,Path.Combine(backupFolder,"ddraw.before-release.dll"));Backup(configPath,Path.Combine(backupFolder,"DDrawCompat.before-release.ini"));
   string temp=file+".patch-"+Guid.NewGuid().ToString("N");File.WriteAllBytes(temp,sf);File.Replace(temp,file,null);
@@ -31,7 +31,7 @@ static class Compatibility {
   File.WriteAllLines(Path.Combine(folder,"installed-files.tsv"),rows.ToArray(),Encoding.UTF8);
  }
  public static void Verify(string folder) {
-  if(BinaryPatch.Hash(File.ReadAllBytes(Path.Combine(folder,"ddraw.dll")))!=DdrawHash)throw new IOException("Bibliotheque graphique modifiee.");
-  if(File.ReadAllText(Path.Combine(folder,"DDrawCompat-SF.ini"))!=Config)throw new IOException("Configuration graphique modifiee.");
+  if(BinaryPatch.Hash(File.ReadAllBytes(Path.Combine(folder,"ddraw.dll")))!=DdrawHash)throw new IOException(Language.T("Bibliotheque graphique modifiee.", "Graphics library modified."));
+  if(File.ReadAllText(Path.Combine(folder,"DDrawCompat-SF.ini"))!=Config)throw new IOException(Language.T("Configuration graphique modifiee.", "Graphics configuration modified."));
  }
 }

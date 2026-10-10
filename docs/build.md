@@ -24,10 +24,11 @@ The uninstaller is also embedded in the installer. Build verifies the checksum
 of the unmodified DDrawCompat DLL before embedding it.
 
 The supplied `patches/sf-autonomous.patch` is the compact compatibility delta
-used by version 0.7. It is not a complete SF.EXE. `src/payload.tsv` lists file
+unchanged since version 0.7. It is not a complete SF.EXE. `src/payload.tsv` lists file
 names, sizes and checksums rather than containing the game files.
 
-The Windows CI builds the three tools and checks public repository contents.
+The Windows CI builds the three tools, checks public repository contents and runs
+`scripts/test-localization.ps1` without game files.
 It cannot run game installation or gameplay tests without privately supplied media.
 Framework compiler builds may differ byte-for-byte from release binaries due
 to compiler-generated metadata; release checksums identify the published artifacts.
@@ -35,7 +36,7 @@ to compiler-generated metadata; release checksums identify the published artifac
 ## Local integration tests
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\test-installation.ps1 -Source "C:\media\SEMPERFI.iso"
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\test-installation.ps1 -Source "C:\media\SEMPERFI.iso" -Language en
 ```
 
 Use a test copy of your source media. Tests install into a unique folder below

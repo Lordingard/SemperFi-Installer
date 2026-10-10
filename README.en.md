@@ -2,7 +2,7 @@
 
 **Play Semper Fi (1998) on modern Windows using your own copy of the game.**
 
-[Français](README.md) · [Download v0.7](https://github.com/Lordingard/SemperFi-Installer/releases/tag/v0.7) · [Report a problem](https://github.com/Lordingard/SemperFi-Installer/issues)
+[FranÃ§ais](README.md) Â· [Download v0.8](https://github.com/Lordingard/SemperFi-Installer/releases/tag/v0.8) Â· [Report a problem](https://github.com/Lordingard/SemperFi-Installer/issues)
 
 This community installer replaces the original 16-bit setup. It accepts the
 supported CD ISO or an extracted folder, verifies the original files and applies
@@ -14,18 +14,20 @@ This project is not affiliated with the original publisher.
 
 ## Install
 
-1. Download and extract [SemperFi-Installer-v0.7-windows.zip](https://github.com/Lordingard/SemperFi-Installer/releases/download/v0.7/SemperFi-Installer-v0.7-windows.zip).
-2. Run **Installer-SemperFi-Autonome-v0.7.exe**.
-3. Select your ISO or the folder containing `SF.EXE`.
+1. Download and extract [SemperFi-Installer-v0.8-windows.zip](https://github.com/Lordingard/SemperFi-Installer/releases/download/v0.8/SemperFi-Installer-v0.8-windows.zip).
+2. Run **Installer-SemperFi-Autonome-v0.8.exe**.
+3. Choose **English** or **Français**, then select your ISO or the folder containing `SF.EXE`.
 4. Choose a new destination. The editable default is `C:\Program Files (x86)\SemperFi`.
 5. Launch the game from the desktop shortcut.
 
-Tools use a French interface. Installation into protected folders requests
+The installer and music patch offer French and English at startup. The selected
+language is remembered for uninstall. Installation into protected folders requests
 administrator permission; playing the game does not need elevation. Existing
 folders and unexpected game editions are rejected to protect user files.
 
 ## Features
 
+- French and English interfaces, including errors and uninstall.
 - Direct installation from ISO or extracted CD contents; no 16-bit setup.
 - Campaign path overflow fix.
 - DDrawCompat 0.7.1, correct palettes and six restored campaign tab icons.
@@ -56,7 +58,7 @@ Outputs are placed in `bin`. No game files are needed to build. Complete
 installation tests require your own source media. See [build instructions](docs/build.md)
 and [technical notes](docs/technical.md).
 
-Version 0.7 passed user tests on the maintainer's modern Windows machine,
+Version 0.8 retains the same game fixes as 0.7. Version 0.7 passed user tests on the maintainer's modern Windows machine,
 including a fresh installation and campaign music. This is not a guarantee
 for every Windows release or every game edition; multiplayer and a complete
 campaign have not been validated.

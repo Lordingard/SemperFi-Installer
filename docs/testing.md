@@ -20,3 +20,18 @@ Use scripts/test-installation.ps1 with your own media to repeat installation
 and uninstall checks. CI checks source-tree contents and compilation only.
 Private diagnostic dumps, user paths, source media and installed files are
 excluded from this repository.
+
+## Bilingual tools (0.8)
+
+French ISO and English extracted-folder installations passed installation,
+file verification, desktop shortcut, Windows registration and uninstall tests
+with both saved-game choices. Selected language and generated notices are checked.
+The installed SF.EXE remains identical to validated 0.7. Public CI checks both
+installer interfaces, language arguments, background culture and persisted language
+without requiring game files. Windows system dialogs retain OS button language.
+
+```powershell
+.\scripts\test-localization.ps1
+.\scripts\test-installation.ps1 -Source "C:\media\SEMPERFI.iso" -Language fr
+.\scripts\test-installation.ps1 -Source "C:\media\SEMPERFI" -Language en
+```
