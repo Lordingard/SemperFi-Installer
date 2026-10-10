@@ -1,0 +1,45 @@
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Threading;
+using System.Windows.Forms;
+using System.Collections.Generic;
+class Uninstaller {
+ static string Self=Assembly.GetExecutingAssembly().Location;
+ static void NoLinks(string path){for(string p=Path.GetFullPath(path);!String.IsNullOrEmpty(p);p=Path.GetDirectoryName(p))if((Directory.Exists(p)||File.Exists(p))&&(File.GetAttributes(p)&FileAttributes.ReparsePoint)!=0)throw new IOException("Les liens et jonctions ne sont pas acceptes.");}
+ static string[] Validate(string folder){folder=Path.GetFullPath(folder).TrimEnd('\\');NoLinks(folder);if(folder==Path.GetPathRoot(folder).TrimEnd('\\'))throw new IOException("Une racine de disque ne peut pas etre desinstallee.");string state=Path.Combine(folder,".semperfi-install.txt");NoLinks(state);string[] info=File.ReadAllLines(state);Guid id;if(info.Length!=5||(info[0]!="SemperFi-0.6"&&info[0]!="SemperFi-0.7")||!Guid.TryParseExact(info[1],"N",out id)||!String.Equals(info[2],folder,StringComparison.OrdinalIgnoreCase))throw new IOException("Installation non reconnue ou deplacee. Le dossier doit rester a son emplacement d'installation.");foreach(var process in Process.GetProcessesByName("SF")){try{if(String.Equals(process.MainModule.FileName,Path.Combine(folder,"SF.EXE"),StringComparison.OrdinalIgnoreCase))throw new IOException("Fermez Semper Fi avant la desinstallation.");}catch(System.ComponentModel.Win32Exception){throw new IOException("Un jeu SF est ouvert ; fermez-le avant la desinstallation.");}}return info;}
+ static bool Saved(string name){return name.Equals("PREFS.DAT",StringComparison.OrdinalIgnoreCase)||name.StartsWith("SCEN\\",StringComparison.OrdinalIgnoreCase)||name.StartsWith("CAMPAIGN\\",StringComparison.OrdinalIgnoreCase);}
+ static string Resolve(string folder,string relative){if(Path.IsPathRooted(relative)||relative.Split('\\','/').Any(s=>s==".."||s=="."||s==""))throw new IOException("Chemin invalide.");string full=Path.GetFullPath(Path.Combine(folder,relative));if(!full.StartsWith(folder+"\\",StringComparison.OrdinalIgnoreCase))throw new IOException("Chemin hors installation.");NoLinks(full);return full;}
+ static List<string> Plan(string folder,bool keep){var files=new List<string>();using(var stream=Assembly.GetExecutingAssembly().GetManifestResourceStream("payload.tsv"))using(var reader=new StreamReader(stream)){foreach(string line in reader.ReadToEnd().Split(new[]{'\r','\n'},StringSplitOptions.RemoveEmptyEntries)){string name=line.Split('\t')[0];if(!keep||!Saved(name))files.Add(Resolve(folder,name));}}
+  foreach(string name in new[]{"save.log","ddraw.dll","DDrawCompat-SF.ini","DDrawCompat-SF.log","DDrawCompat-SF.dmp","DDrawCompat-LICENSE.txt","Jouer.cmd","INSTALLATION.txt","COMPATIBILITE.txt","DESINSTALLATION.txt","installation.log","source-files.tsv","installed-files.tsv","compat-backup\\SF.original.exe","compat-backup\\SF.before-music-v07.exe","Desinstaller.exe"})files.Add(Resolve(folder,name));
+  if(!keep){foreach(string sub in new[]{"SCEN","CAMPAIGN"}){string directory=Resolve(folder,sub);if(Directory.Exists(directory))Walk(directory,files);}}
+  return files.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+ }
+ static void Walk(string folder,List<string> files){NoLinks(folder);foreach(string file in Directory.GetFiles(folder)){NoLinks(file);files.Add(file);}foreach(string child in Directory.GetDirectories(folder))Walk(child,files);}
+ static void EmptyDirectories(string folder){NoLinks(folder);foreach(string child in Directory.GetDirectories(folder)){if((File.GetAttributes(child)&FileAttributes.ReparsePoint)!=0)continue;EmptyDirectories(child);}if(!Directory.EnumerateFileSystemEntries(folder).Any())Directory.Delete(folder,false);}
+ static void Remove(string folder,bool keep){string[] state=Validate(folder);List<string> plan=Plan(folder,keep);
+  string shortcutPath=state[3];if(File.Exists(shortcutPath)){NoLinks(shortcutPath);object shell=Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));object shortcut=null;try{shortcut=shell.GetType().InvokeMember("CreateShortcut",BindingFlags.InvokeMethod,null,shell,new object[]{shortcutPath});string target=(string)shortcut.GetType().InvokeMember("TargetPath",BindingFlags.GetProperty,null,shortcut,null);if(String.Equals(target,Path.Combine(folder,"SF.EXE"),StringComparison.OrdinalIgnoreCase))File.Delete(shortcutPath);}finally{if(shortcut!=null)Marshal.FinalReleaseComObject(shortcut);Marshal.FinalReleaseComObject(shell);}}
+  foreach(string file in plan)if(File.Exists(file)){for(int attempt=0;;attempt++){try{File.SetAttributes(file,FileAttributes.Normal);File.Delete(file);break;}catch(IOException){if(attempt>=20)throw;Thread.Sleep(250);}}}
+  InstallSupport.Unregister(folder,state[1],state[4]);
+  File.Delete(Resolve(folder,".semperfi-install.txt"));
+  EmptyDirectories(folder);
+ }
+ static string Q(string value){return InstallSupport.Quote(value);}
+ static void CleanupWorker(){string directory=Path.GetDirectoryName(Self),temp=Path.GetFullPath(Path.GetTempPath());if(!directory.StartsWith(temp,StringComparison.OrdinalIgnoreCase)||!Path.GetFileName(directory).StartsWith("SemperFi-uninstall-"))return;string script="Wait-Process -Id "+Process.GetCurrentProcess().Id+" -ErrorAction SilentlyContinue; Remove-Item -LiteralPath '"+Self.Replace("'","''")+"' -Force; Remove-Item -LiteralPath '"+directory.Replace("'","''")+"' -ErrorAction SilentlyContinue";var start=new ProcessStartInfo("powershell.exe","-NoProfile -NonInteractive -EncodedCommand "+Convert.ToBase64String(Encoding.Unicode.GetBytes(script)));start.UseShellExecute=false;start.CreateNoWindow=true;Process.Start(start);}
+ [STAThread] static int Main(string[] args){bool worker=args.Length==4&&args[0]=="--worker";try{
+  if(worker){string folder=Path.GetFullPath(args[1]).TrimEnd('\\');if(Validate(folder)[1]!=args[3])throw new IOException("Identifiant d'installation incorrect.");Thread.Sleep(500);Remove(folder,args[2]=="keep");MessageBox.Show(args[2]=="keep"?"Jeu desinstalle. Sauvegardes et preferences conservees dans :\n"+folder:"Jeu desinstalle. Les autres fichiers personnels eventuels sont conserves.","Semper Fi");return 0;}
+  if(args.Length==3&&args[0]=="--uninstall"){string folder=Path.GetFullPath(args[1]).TrimEnd('\\');if(args[2]!="--keep-saves"&&args[2]!="--delete-saves")throw new IOException("Option invalide.");if(Self.StartsWith(folder+"\\",StringComparison.OrdinalIgnoreCase))throw new IOException("Ce mode doit etre lance depuis un autre dossier.");if(InstallSupport.Protected(folder)&&!InstallSupport.Administrator)return InstallSupport.Elevate(Self,"--uninstall "+Q(folder)+" "+args[2]);Remove(folder,args[2]=="--keep-saves");return 0;}
+  string root=Path.GetDirectoryName(Self);string[] state=Validate(root);Application.EnableVisualStyles();
+  var form=new Form();form.Text="Desinstaller Semper Fi";form.ClientSize=new System.Drawing.Size(540,205);form.FormBorderStyle=FormBorderStyle.FixedDialog;form.MaximizeBox=false;form.StartPosition=FormStartPosition.CenterScreen;
+  var label=new Label();label.Text="Retirer le jeu et son raccourci du Bureau.\nFermez le jeu avant de continuer.";label.SetBounds(18,18,500,48);form.Controls.Add(label);
+  var keep=new CheckBox();keep.Text="Conserver mes sauvegardes et mes preferences";keep.Checked=true;keep.SetBounds(18,80,500,28);form.Controls.Add(keep);
+  var note=new Label();note.Text="Elles restent dans SCEN, CAMPAIGN et PREFS.DAT.\nLes autres fichiers personnels restent conserves.";note.SetBounds(18,112,500,40);form.Controls.Add(note);
+  var remove=new Button();remove.Text="Desinstaller";remove.SetBounds(18,163,130,28);form.Controls.Add(remove);var cancel=new Button();cancel.Text="Annuler";cancel.SetBounds(160,163,110,28);form.Controls.Add(cancel);cancel.Click+=(s,e)=>form.Close();
+  remove.Click+=(s,e)=>{try{if(!keep.Checked&&MessageBox.Show("Supprimer egalement les sauvegardes et preferences de cette installation ?","Suppression des sauvegardes",MessageBoxButtons.YesNo,MessageBoxIcon.Warning)!=DialogResult.Yes)return;Plan(root,keep.Checked);string temp=Path.Combine(Path.GetTempPath(),"SemperFi-uninstall-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(temp);string child=Path.Combine(temp,"Desinstaller.exe");File.Copy(Self,child);Process.Start(new ProcessStartInfo(child,"--worker "+Q(root)+" "+(keep.Checked?"keep":"delete")+" "+state[1]){UseShellExecute=true,Verb=InstallSupport.Protected(root)&&!InstallSupport.Administrator?"runas":"open",WindowStyle=ProcessWindowStyle.Hidden});form.Close();}catch(Exception ex){MessageBox.Show(ex.Message,"Desinstallation interrompue");}};
+  Application.Run(form);return 0;
+ }catch(Exception ex){if(args.Length>0){try{File.WriteAllText(Path.Combine(Path.GetDirectoryName(Self),"uninstall-error.txt"),ex.ToString());}catch{}if(worker)MessageBox.Show(ex.Message,"Desinstallation interrompue");return 1;}MessageBox.Show(ex.Message,"Desinstallation interrompue");return 1;}finally{if(worker)CleanupWorker();}}
+}

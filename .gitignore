@@ -1,0 +1,15 @@
+/.local/
+/bin/
+/artifacts/
+*.iso
+*.bin
+*.cue
+*.mdf
+*.mds
+*.nrg
+*.sav
+*.dmp
+*.log
+*-error.txt
+__pycache__/
+*.pyc

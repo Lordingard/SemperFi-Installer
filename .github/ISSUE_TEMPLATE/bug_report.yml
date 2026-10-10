@@ -1,0 +1,22 @@
+name: Signaler un problème / Report a bug
+description: Installation, lancement, affichage, musique ou désinstallation
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version de l'installateur et de Windows
+      placeholder: '0.7 — Windows 11 64 bits'
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes, résultat attendu et résultat obtenu
+      description: Indiquer la source (ISO ou dossier), le chemin et le message exact.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Journaux utiles
+      description: Joindre les extraits pertinents, sans ISO, fichiers du jeu ni informations personnelles.
